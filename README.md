@@ -183,3 +183,133 @@ Successfully accessed the My Account page as SalesUser1 after changing the tempo
 Part 1 established a cloud identity lab with three departmental test users and three security groups. Each user’s group membership was verified, and all three accounts successfully completed their first sign-in and required password change.
 
 This environment provides the foundation for configuring and testing MFA and sign-in protections in Part 2.
+
+## Part 2: MFA Registration and Sign-in Log Review
+
+### Overview
+
+In this part of the lab, I verified that Security Defaults were enabled, registered Microsoft Authenticator for the ITSupport1, HRUser1, and SalesUser1 test accounts, and reviewed their sign-in activity in Microsoft Entra ID.
+
+I confirmed each account’s registered authentication method and examined sign-in details to distinguish successful password authentication, MFA registration requirements, and normal sign-in interruptions.
+
+### Technologies Used
+
+- Microsoft Entra admin center
+- Microsoft Entra ID Security Defaults
+- Microsoft Authenticator
+- My Sign-ins Security info portal
+- Microsoft Entra ID sign-in logs
+
+### 1. Verify Security Defaults
+
+<img width="1913" height="910" alt="1" src="https://github.com/user-attachments/assets/2e6f06d7-362d-4b9f-900b-bf8c9dbfacae" />
+
+Verified that Security Defaults were already enabled for the lab tenant. This established the identity security baseline used during this part of the project.
+
+### 2. Begin Authenticator Registration for ITSupport1
+
+<img width="1479" height="798" alt="2" src="https://github.com/user-attachments/assets/1e0d4c99-f69f-40c8-adc4-be44dc4d0106" />
+
+Signed in as ITSupport1 and received a prompt to set up Microsoft Authenticator as an additional way to verify the account’s identity.
+
+### 3. Complete Authenticator Registration for ITSupport1
+
+<img width="772" height="679" alt="3" src="https://github.com/user-attachments/assets/8ea58165-7078-43a3-8689-81b4c58b42f5" />
+
+Completed the registration process and received confirmation that Microsoft Authenticator had been added as the account’s default sign-in method.
+
+### 4. Verify ITSupport1’s Registered Authentication Method
+
+<img width="1915" height="988" alt="4" src="https://github.com/user-attachments/assets/de6e98c9-421f-47f4-bd47-1373eb91a912" />
+
+Reviewed ITSupport1’s Security info page and confirmed that Microsoft Authenticator was listed for push multifactor authentication on an iPhone.
+
+### 5. Begin Authenticator Registration for HRUser1
+
+<img width="1189" height="717" alt="5" src="https://github.com/user-attachments/assets/3a72c1b4-e9c8-42d7-9aac-30116013af4a" />
+
+Signed in as HRUser1 and received the account security prompt to register Microsoft Authenticator.
+
+### 6. Complete Authenticator Registration for HRUser1
+
+<img width="993" height="647" alt="6" src="https://github.com/user-attachments/assets/da34e88f-7bd1-4c28-bb57-555a4ff460cb" />
+
+Completed Microsoft Authenticator registration for HRUser1 and received confirmation that it had been added as the default sign-in method.
+
+### 7. Verify HRUser1’s Registered Authentication Method
+
+<img width="1912" height="947" alt="7" src="https://github.com/user-attachments/assets/c6b6a426-3ece-4e8a-b96a-23b802e7c229" />
+
+Reviewed HRUser1’s Security info page and confirmed that Microsoft Authenticator was registered for push multifactor authentication on an iPhone.
+
+### 8. Begin Authenticator Registration for SalesUser1
+
+<img width="1032" height="612" alt="8" src="https://github.com/user-attachments/assets/c5270645-6d77-453b-90fa-c64f25ec33a1" />
+
+Signed in as SalesUser1 and began the Microsoft Authenticator registration process through the account security prompt.
+
+### 9. Complete Authenticator Registration for SalesUser1
+
+<img width="1017" height="650" alt="9" src="https://github.com/user-attachments/assets/d01c7e22-218e-4f85-b779-4ca2b38effd0" />
+
+Received confirmation that Microsoft Authenticator had been added to SalesUser1 and set as the default sign-in method.
+
+### 10. Verify SalesUser1’s Registered Authentication Method
+
+<img width="1909" height="752" alt="10" src="https://github.com/user-attachments/assets/43b1739a-514a-4d42-a3af-08dde2b28752" />
+
+Reviewed SalesUser1’s Security info page and confirmed that Microsoft Authenticator was listed for push multifactor authentication on an iPhone.
+
+### 11. Review ITSupport1’s Sign-in Event
+
+<img width="1903" height="920" alt="11" src="https://github.com/user-attachments/assets/d1636a07-442c-4776-a2ea-4c7713127698" />
+
+Reviewed the Basic info tab for ITSupport1’s October 13 sign-in event. The event showed a successful sign-in with a single-factor authentication requirement.
+
+### 12. Examine ITSupport1’s Authentication Details
+
+<img width="1903" height="803" alt="12" src="https://github.com/user-attachments/assets/8822c492-72e0-4902-ac62-d488a2a7eb8e" />
+
+The Authentication Details tab showed that password authentication succeeded using “Password in the cloud,” with the result “Correct password.” This event documented successful password authentication; it did not show a separate Microsoft Authenticator approval.
+
+### 13. Review HRUser1’s Interrupted Sign-in
+
+<img width="1914" height="902" alt="13" src="https://github.com/user-attachments/assets/77992f7e-0b95-4dcd-a4e0-f1ae0bc97198" />
+
+Reviewed an HRUser1 sign-in event with a multifactor authentication requirement and an Interrupted status. The additional details stated that the user was presented with options to provide contact information for MFA.
+
+### 14. Examine HRUser1’s Authentication Details
+
+<img width="1898" height="871" alt="14" src="https://github.com/user-attachments/assets/de6e5060-7141-4c0e-a136-69d8e8c5ccd8" />
+
+Confirmed that Security Defaults applied to this event. The password authentication step succeeded, while a subsequent step indicated that MFA was required and was not completed within this event. This documented an MFA registration interruption rather than a completed MFA sign-in.
+
+### 15. Review SalesUser1’s Interrupted Sign-in
+
+<img width="1903" height="903" alt="15" src="https://github.com/user-attachments/assets/48c2009e-ebe9-43df-b060-96a9692a846c" />
+
+Reviewed SalesUser1’s sign-in event and its Interrupted status. The additional details identified the interruption as an expected part of the login flow in which the user is asked whether to remain signed in to the browser.
+
+### 16. Examine SalesUser1’s Authentication Details
+
+<img width="1908" height="767" alt="16" src="https://github.com/user-attachments/assets/9ef7e58a-1002-4d20-8426-3bfd9d4841ac" />
+
+Verified that SalesUser1’s password authentication succeeded, with the result “Correct password.” Combined with the Basic info details, this showed that the interruption was associated with the “Stay signed in?” prompt. This event did not show a separate Microsoft Authenticator approval.
+
+### Skills Demonstrated
+
+- Reviewing tenant security settings
+- Registering Microsoft Authenticator for multiple users
+- Verifying registered authentication methods
+- Reviewing user sign-in logs
+- Interpreting authentication requirements and individual step results
+- Investigating interrupted sign-in events
+- Documenting findings based on the available evidence
+
+### Summary
+
+Registered Microsoft Authenticator for all three test accounts and confirmed push MFA registration through their Security info pages.
+
+The sign-in log review demonstrated the importance of examining individual authentication steps and additional details. The selected events showed successful password authentication, an MFA registration requirement, and an expected interruption for the “Stay signed in?” prompt.
+
+These findings distinguish successful authentication-method registration from evidence that MFA was completed during a specific sign-in.
