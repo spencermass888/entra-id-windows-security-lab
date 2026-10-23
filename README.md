@@ -313,3 +313,192 @@ Registered Microsoft Authenticator for all three test accounts and confirmed pus
 The sign-in log review demonstrated the importance of examining individual authentication steps and additional details. The selected events showed successful password authentication, an MFA registration requirement, and an expected interruption for the “Stay signed in?” prompt.
 
 These findings distinguish successful authentication-method registration from evidence that MFA was completed during a specific sign-in.
+
+## Part 3: Windows Endpoint Security Hardening
+
+### Overview
+
+In Part 3, I hardened a Windows 10 Pro virtual machine by strengthening password requirements, separating standard and administrator accounts, reviewing endpoint protection, and enabling security logging.
+
+### Tools Used
+
+VirtualBox, Windows 10 Pro, Local Users and Groups, Local Security Policy, Microsoft Defender Antivirus, Windows Defender Firewall, Command Prompt, and Event Viewer.
+
+### 1. Creating a Standard Local Account
+
+I created **LabUser1**, with the display name **Lab Standard User**, for security testing without administrator privileges.
+
+<img width="1021" height="772" alt="1" src="https://github.com/user-attachments/assets/3a554425-ef2f-45a9-a646-d16f7b2f6c04" />
+
+### 2. Verifying Standard-User Group Membership
+
+I confirmed that LabUser1 belonged to the local **Users** group.
+
+<img width="1025" height="785" alt="2" src="https://github.com/user-attachments/assets/de5ed992-ec0e-4649-b89e-42e5d66248f8" />
+
+### 3. Reviewing the Original Password Policy
+
+I reviewed the original password policy, which had a minimum password length of **0 characters** and complexity requirements disabled.
+
+<img width="1022" height="772" alt="3" src="https://github.com/user-attachments/assets/a01a4507-f7b4-4f67-a439-ffbe55c72bbc" />
+
+### 4. Setting the Minimum Password Length
+
+I increased the minimum password length to **14 characters**.
+
+<img width="1021" height="771" alt="4" src="https://github.com/user-attachments/assets/75eeeffa-a7be-4e0a-a3a7-4b768cbe04aa" />
+
+### 5. Enabling Password Complexity
+
+I enabled **Password must meet complexity requirements** in Local Security Policy.
+
+<img width="1019" height="774" alt="5" src="https://github.com/user-attachments/assets/503f56dc-067c-4b58-85eb-cadd182c1304" />
+
+### 6. Verifying the Updated Password Policy
+
+I confirmed that the minimum password length was **14 characters** and password complexity was **Enabled**.
+
+<img width="1020" height="774" alt="6" src="https://github.com/user-attachments/assets/6d6d8ea7-66f7-4605-8f36-d01d58043698" />
+
+### 7. Reviewing Account Lockout Settings
+
+I verified the existing threshold of **10 invalid logon attempts**, a **10-minute lockout duration**, and a **10-minute reset period**.
+
+<img width="1021" height="777" alt="7" src="https://github.com/user-attachments/assets/9347f2aa-4731-493a-9677-12486fb2a3f3" />
+
+### 8. Resetting the Standard Account Password
+
+I reset LabUser1’s password to meet the strengthened requirements and received confirmation that the password had been set.
+
+<img width="1030" height="775" alt="8" src="https://github.com/user-attachments/assets/d90d8e97-cc41-4f9d-9c4d-7429efd15862" />
+
+### 9. Signing Out of the Administrator Session
+
+I signed out to switch from the administrator account to the standard account for testing.
+
+<img width="1029" height="773" alt="9" src="https://github.com/user-attachments/assets/7f31316a-a396-47c2-a96c-b5d9f62e6ab2" />
+
+### 10. Signing In as the Standard User
+
+I selected **Lab Standard User**, the display name for LabUser1, and signed in with its updated password.
+
+<img width="1023" height="769" alt="10" src="https://github.com/user-attachments/assets/166a290f-7112-4175-8d38-366a6416bed3" />
+
+### 11. Verifying Account Identity and Administrator Membership
+
+I used `whoami` and `net localgroup Administrators` to confirm that I was signed in as **LabUser1** and that it was not a member of the Administrators group.
+
+<img width="1024" height="764" alt="11" src="https://github.com/user-attachments/assets/805f0816-7a25-4839-aeb9-31d5a74ebc3d" />
+
+### 12. Testing Administrative Elevation
+
+I attempted to open an elevated Command Prompt from the standard account and verified that Windows requested separate administrator credentials.
+
+<img width="1021" height="769" alt="12" src="https://github.com/user-attachments/assets/f2cb45bf-fc16-4736-8bbd-8f14cc35b094" />
+
+### 13. Reviewing Microsoft Defender
+
+I returned to the administrator account and opened Microsoft Defender, which initially showed no current threats and no available previous scan result.
+
+<img width="1020" height="775" alt="13" src="https://github.com/user-attachments/assets/24cd3e00-0a82-4137-ad9c-8da3309dd556" />
+
+### 14. Verifying Real-Time and Cloud Protection
+
+I confirmed that Microsoft Defender’s **Real-time protection** and **Cloud-delivered protection** were enabled.
+
+<img width="1022" height="765" alt="14" src="https://github.com/user-attachments/assets/7eb020a3-32ec-4020-90ff-6b420f13f4c8" />
+
+### 15. Verifying Sample Submission and Tamper Protection
+
+I confirmed that **Automatic sample submission** and **Tamper Protection** were enabled.
+
+<img width="1027" height="772" alt="15" src="https://github.com/user-attachments/assets/0e79d03d-368c-49ff-9aad-b1185f7041ea" />
+
+### 16. Accessing Protected Security Settings
+
+I approved the Windows Security elevation prompt to access Microsoft Defender’s exclusion settings.
+
+<img width="1035" height="764" alt="16" src="https://github.com/user-attachments/assets/40dd3cf1-10a6-4510-a34c-bf932f241d34" />
+
+### 17. Reviewing Antivirus Exclusions
+
+I checked Microsoft Defender’s Exclusions page and confirmed that no exclusions were listed.
+
+<img width="1019" height="762" alt="17" src="https://github.com/user-attachments/assets/6d0cff16-c878-49c4-a993-d33599e00ed9" />
+
+### 18. Checking for Security Intelligence Updates
+
+I initiated a security intelligence update check; this image shows the check in progress rather than confirmation of an installed update.
+
+<img width="1024" height="772" alt="18" src="https://github.com/user-attachments/assets/53a6ea7d-ea03-4a7d-acc0-5b600fc6bdf7" />
+
+### 19. Reviewing Quick Scan Results
+
+I completed a quick scan that checked **29,206 files** in **28 seconds** and reported **0 threats found**.
+
+<img width="1026" height="774" alt="19" src="https://github.com/user-attachments/assets/f07c0c78-cfbb-4da9-ad3c-6c49be28f1a7" />
+
+### 20. Verifying Firewall Protection
+
+I confirmed that Windows Defender Firewall was enabled for the **Domain**, **Private**, and **Public** profiles, with Public shown as active.
+
+<img width="1020" height="774" alt="20" src="https://github.com/user-attachments/assets/26e454ec-bec6-40cf-a4f4-06450c3e6db9" />
+
+### 21. Reviewing Firewall Connection Defaults
+
+I verified that all profiles blocked unmatched inbound connections and allowed unmatched outbound connections.
+
+<img width="1025" height="773" alt="21" src="https://github.com/user-attachments/assets/fdc6352c-3a61-4cf5-9810-f7593a4bd7d0" />
+
+### 22. Enabling Dropped-Packet Logging
+
+I enabled **Log dropped packets** for the Public firewall profile while leaving successful-connection logging disabled and the log size limit at **4,096 KB**.
+
+<img width="1022" height="773" alt="22" src="https://github.com/user-attachments/assets/3e12cc49-4386-4fd4-a496-746ab789a6d3" />
+
+### 23. Enabling Logon Auditing
+
+I configured **Audit Logon** to record both successful and failed logon attempts.
+
+<img width="1019" height="777" alt="23" src="https://github.com/user-attachments/assets/14040c2a-5672-4be8-9bbf-e6b38860e16c" />
+
+### 24. Verifying the Effective Audit Policy
+
+I ran `auditpol /get /subcategory:"Logon"` and confirmed that the effective setting was **Success and Failure**.
+
+<img width="1020" height="775" alt="24" src="https://github.com/user-attachments/assets/285b3eff-3fb5-49c0-8dcc-8780f8ed48bd" />
+
+### 25. Filtering Security Events
+
+I configured an Event Viewer Security log filter for **4624**, successful logons, and **4625**, failed logons.
+
+<img width="1028" height="775" alt="25" src="https://github.com/user-attachments/assets/667898ec-39da-49f7-9f63-661088f69bbe" />
+
+### 26. Reviewing a Failed Logon
+
+I examined **Event ID 4625** for LabUser1 at **9:08:06 PM**, which recorded a failed interactive logon with **Logon Type 2**.
+
+<img width="1016" height="775" alt="26" src="https://github.com/user-attachments/assets/d4b7f985-f5bc-4cf4-96d1-1ed5c48f5516" />
+
+### 27. Reviewing a Successful Logon
+
+I examined **Event ID 4624** for LabUser1 at **9:07:12 PM**, documenting a separate successful logon that occurred before the failed event above.
+
+<img width="1014" height="768" alt="27" src="https://github.com/user-attachments/assets/625ecaa2-dff8-4e42-be7c-a04508d8d385" />
+
+### Skills Demonstrated
+
+- Local user and group administration
+- Standard-user and administrator separation
+- Password policy configuration
+- Account lockout policy review
+- User Account Control testing
+- Microsoft Defender review and scanning
+- Firewall configuration and logging
+- Logon auditing and Security event analysis
+
+### Summary
+
+In this part, I strengthened local password requirements, tested standard-user restrictions, reviewed Microsoft Defender and firewall protection, enabled dropped-packet logging for the Public profile, and verified successful and failed logon auditing.
+
+The virtual machine remained a standalone Windows 10 lab endpoint during Part 3. The work demonstrates the specific controls configured and verified, rather than a complete security assessment or confirmation that Windows was fully patched.
