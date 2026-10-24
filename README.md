@@ -502,11 +502,3 @@ I examined **Event ID 4624** for LabUser1 at **9:07:12 PM**, documenting a separ
 In this part, I strengthened local password requirements, tested standard-user restrictions, reviewed Microsoft Defender and firewall protection, enabled dropped-packet logging for the Public profile, and verified successful and failed logon auditing.
 
 The virtual machine remained a standalone Windows 10 lab endpoint during Part 3. The work demonstrates the specific controls configured and verified, rather than a complete security assessment or confirmation that Windows was fully patched.
-
-### 1. Reviewing the Initial Windows Connection Status
-
-I opened Access work or school in Windows Settings and confirmed that the virtual machine did not have an existing work or school connection before beginning the Microsoft Entra join.
-
-<img width="1021" height="770" alt="1" src="https://github.com/user-attachments/assets/90f3cf97-b341-4471-ab3e-e7e9ac7e3997" />
-
-
