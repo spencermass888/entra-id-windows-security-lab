@@ -502,3 +502,165 @@ I examined **Event ID 4624** for LabUser1 at **9:07:12 PM**, documenting a separ
 In this part, I strengthened local password requirements, tested standard-user restrictions, reviewed Microsoft Defender and firewall protection, enabled dropped-packet logging for the Public profile, and verified successful and failed logon auditing.
 
 The virtual machine remained a standalone Windows 10 lab endpoint during Part 3. The work demonstrates the specific controls configured and verified, rather than a complete security assessment or confirmation that Windows was fully patched.
+
+### 1. Reviewing the Initial Windows Connection Status
+
+I opened Access work or school in Windows Settings and confirmed that the virtual machine did not have an existing work or school connection before beginning the Microsoft Entra join.
+
+<img width="1021" height="770" alt="1" src="https://github.com/user-attachments/assets/90f3cf97-b341-4471-ab3e-e7e9ac7e3997" />
+
+2. Reviewing the Microsoft Entra Tenant
+
+I reviewed the Spencer Home Lab tenant in the Microsoft Entra admin center. The tenant contained the users and groups configured earlier in the project and showed zero devices before the Windows virtual machine was joined.
+
+<img width="1878" height="952" alt="2" src="https://github.com/user-attachments/assets/a9e43c4b-1d2e-400a-8894-c6c6035a2100" />
+
+3. Reviewing Device Join Settings
+
+I reviewed the tenant’s device settings and confirmed that users were allowed to join devices to Microsoft Entra ID. The settings also showed that the registering user would be added as a local administrator during the join. The separate setting requiring MFA for device registration or join was set to No.
+
+<img width="1872" height="946" alt="3" src="https://github.com/user-attachments/assets/32f067f7-0578-4508-b2d1-5ec098ac2fa6" />
+
+4. Starting the Microsoft Entra Join
+
+From Access work or school, I selected Connect and then chose Join this device to Microsoft Entra ID to begin joining the Windows virtual machine to the lab tenant.
+
+<img width="1023" height="772" alt="4" src="https://github.com/user-attachments/assets/26d4a8de-3c07-4aff-b1d8-b010209ff9b1" />
+
+5. Authenticating with the Cloud Account
+
+I used the ITSupport1 cloud account created earlier in the project to authenticate during the device join process. The screenshot shows the password prompt with an empty password field.
+
+<img width="1018" height="773" alt="5" src="https://github.com/user-attachments/assets/e5f0b953-1547-49a8-8565-d730ec5e7bdf" />
+
+6. Confirming the Organization and Account
+
+I verified that the organization was SpencerHomeLab.onmicrosoft.com and that the joining account was ITSupport1. The confirmation displayed the user type as Administrator, consistent with the device setting that adds the joining user as a local administrator.
+
+<img width="1025" height="765" alt="6" src="https://github.com/user-attachments/assets/cf91798f-e50d-47bb-b20e-947b3627dbcd" />
+
+7. Completing the Device Join
+
+Windows confirmed that the device was connected to Spencer Home Lab. The completion message provided instructions for switching accounts and signing into Windows with the cloud account.
+
+<img width="1017" height="764" alt="7" src="https://github.com/user-attachments/assets/1020f037-40a0-4c21-af23-db6e64f94808" />
+
+8. Verifying the Device in Microsoft Entra ID
+
+I returned to the Microsoft Entra admin center and confirmed that WIN10-ENDPOINT appeared in the device inventory. The device was enabled, listed ITSupport1 as its owner, and showed no MDM enrollment.
+
+<img width="1866" height="946" alt="8" src="https://github.com/user-attachments/assets/e38c07ff-7222-415c-9f52-84940cf925a6" />
+
+9. Reviewing the Device Properties
+
+I opened the device properties and verified that the join type was Microsoft Entra joined. I also reviewed the device name, Windows version, owner, and device identifiers. MDM was listed as None, and compliance was listed as N/A.
+
+<img width="1867" height="947" alt="9" src="https://github.com/user-attachments/assets/c24e42d9-cffb-404c-aa01-85d37baeba5f" />
+
+10. Preparing to Switch Windows Accounts
+
+I opened the Windows account menu from the existing local LabUser session to sign out and begin testing Windows access with the Microsoft Entra account.
+
+<img width="1024" height="772" alt="10" src="https://github.com/user-attachments/assets/2e5e6fd0-6fa8-4638-9745-ddb95233b7b5" />
+
+11. Signing into Windows with ITSupport1
+
+I successfully signed into Windows using the ITSupport1 cloud account. The Windows welcome screen displayed the account name as the new user session loaded.
+
+<img width="1017" height="750" alt="11" src="https://github.com/user-attachments/assets/391bda32-be4b-4cce-9d31-cbecc7129bba" />
+
+12. Beginning Windows Hello Setup
+
+After signing in, Windows prompted me to configure Windows Hello for the work or school account. I continued with the setup to create a PIN for this account on the virtual machine.
+
+<img width="1034" height="772" alt="12" src="https://github.com/user-attachments/assets/f1d3d169-e27e-416e-8c10-5121da390ee0" />
+
+13. Approving the Microsoft Authenticator Request
+
+During Windows Hello setup, I received a Microsoft Authenticator approval prompt for ITSupport1 and approved the request using the authentication method registered in Part 2. The number displayed in the prompt was covered before publication.
+
+<img width="1026" height="772" alt="13" src="https://github.com/user-attachments/assets/ce4d3e4f-a740-4000-a44b-2cdcb15b6e66" />
+
+14. Creating a Windows Hello PIN
+
+I proceeded to the Windows Security PIN setup screen and created a PIN privately. The screenshot was captured before entering the PIN, so neither the PIN nor its confirmation is visible.
+
+<img width="1020" height="765" alt="14" src="https://github.com/user-attachments/assets/f4a75dfc-7422-4a9f-8187-2928b65a2c94" />
+
+15. Completing Windows Hello Setup
+
+Windows confirmed that PIN setup was complete and that the account could now use the PIN to sign into the device.
+
+<img width="1021" height="768" alt="15" src="https://github.com/user-attachments/assets/d7270dd6-8212-4028-bea4-9cc5a2b6961b" />
+
+16. Verifying the Windows Identity and Device Join
+
+I ran whoami and dsregcmd /status in Command Prompt. The account identity appeared as azuread\itsupport1, while the device status showed AzureAdJoined : YES, DomainJoined : NO, and DeviceAuthStatus : SUCCESS, confirming the Microsoft Entra join.
+
+<img width="1024" height="777" alt="16" src="https://github.com/user-attachments/assets/95e66ba7-792c-465f-8247-5094243cbcc0" />
+
+17. Reviewing Windows Hello and Token Status
+
+I reviewed the user and SSO sections of the diagnostic output. NgcSet : YES indicated that a Windows Hello key was configured, AzureAdPrt : YES showed that a Primary Refresh Token was available, and KeySignTest : PASSED confirmed that the diagnostic key-signing test succeeded.
+
+<img width="1023" height="784" alt="17" src="https://github.com/user-attachments/assets/07ea2b8f-85c1-4ba1-90e1-edfef4452b4c" />
+
+18. Reviewing Cloud Sign-in Activity
+
+I opened the ITSupport1 sign-in logs and reviewed the events generated during Windows sign-in and account setup. The list included successful Windows sign-in activity and a separate interrupted device registration event. I covered the public IP addresses before publishing the screenshot.
+
+<img width="1877" height="945" alt="18" src="https://github.com/user-attachments/assets/233289b6-6839-42bd-9f4b-b093bf55e57c" />
+
+19. Inspecting the Successful Windows Sign-in Event
+
+I opened the successful Windows Sign In event and reviewed its basic information. The event identified ITSupport1 as the user and recorded a successful sign-in with a single-factor authentication requirement.
+
+<img width="1875" height="944" alt="19" src="https://github.com/user-attachments/assets/e2638b3a-0516-42ce-8614-31c998823515" />
+
+20. Verifying the Authentication Method
+
+I reviewed the authentication details for the Windows Sign In event. The record showed successful password authentication with the result Correct password. This event documented password authentication rather than an MFA challenge.
+
+<img width="1869" height="935" alt="20" src="https://github.com/user-attachments/assets/24aff023-1331-498b-850c-1d88b01e4a0c" />
+
+21. Checking Device Information in the Sign-in Logs
+
+I reviewed the device information associated with the sign-in activity and compared its device ID with the joined virtual machine. The record showed Azure AD joined as the join type, with Managed and Compliant both listed as No.
+
+<img width="1881" height="890" alt="21" src="https://github.com/user-attachments/assets/5c9943d8-7cf3-4e1b-90de-0275e31dc629" />
+
+22. Reviewing a Previously Satisfied Authentication Requirement
+
+I inspected another authentication record from the setup activity. It showed a successful result with a previously satisfied first-factor requirement. I distinguished this from evidence of a new Microsoft Authenticator approval in that specific event.
+
+<img width="1870" height="527" alt="22" src="https://github.com/user-attachments/assets/340cdbc7-5fca-42a8-a4b5-438be888fb41" />
+
+23. Confirming the Final Windows Connection
+
+I returned to Access work or school in Windows Settings and verified that the device remained connected to Spencer Home Lab’s Entra ID through ITSupport1. This provided a final confirmation of the connection from the Windows endpoint.
+
+<img width="1021" height="771" alt="23" src="https://github.com/user-attachments/assets/7f5ba406-bdc3-42b5-b8f2-0cd024994dad" />
+
+Results and Observations
+
+The Windows virtual machine was successfully joined to Microsoft Entra ID, and ITSupport1 could sign into Windows using its cloud identity. Windows Hello setup was completed, and the device connection was verified through both endpoint diagnostics and the Microsoft Entra admin center.
+
+The evidence also showed the distinction between device join, device management, and authentication. The device was Microsoft Entra joined without MDM enrollment or a compliant status. The Windows Sign In event recorded successful password authentication, while Microsoft Authenticator approval occurred during Windows Hello setup.
+
+Skills Demonstrated
+
+Microsoft Entra ID device join and device inventory review.
+
+Windows sign-in using a cloud identity.
+
+Windows Hello PIN setup.
+
+Microsoft Authenticator approval during account setup.
+
+Identity and device diagnostics using whoami and dsregcmd /status.
+
+Sign-in log analysis and authentication method verification.
+
+Distinguishing device join from MDM enrollment and compliance.
+
+Preparing screenshots for public technical documentation.
