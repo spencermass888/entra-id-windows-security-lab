@@ -503,6 +503,16 @@ In this part, I strengthened local password requirements, tested standard-user r
 
 The virtual machine remained a standalone Windows 10 lab endpoint during Part 3. The work demonstrates the specific controls configured and verified, rather than a complete security assessment or confirmation that Windows was fully patched.
 
+## Part 4: Joining Windows to Microsoft Entra ID
+
+### Overview
+
+In Part 4, I joined the Windows 10 Pro virtual machine from Part 3 to Microsoft Entra ID using the ITSupport1 account. I signed in to Windows with that cloud account, set up a Windows Hello PIN, and verified the device join in both Windows and the Microsoft Entra admin center.
+
+### Tools Used
+
+VirtualBox, Windows 10 Pro, Windows Settings, Microsoft Entra admin center, Microsoft Authenticator, Windows Hello, and Command Prompt (`whoami` and `dsregcmd /status`).
+
 ### 1. Reviewing the Initial Windows Connection Status
 
 I opened Access work or school in Windows Settings and confirmed that the virtual machine did not have an existing work or school connection before beginning the Microsoft Entra join.
