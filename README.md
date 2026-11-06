@@ -674,3 +674,154 @@ Sign-in log analysis and authentication method verification.
 Distinguishing device join from MDM enrollment and compliance.
 
 Preparing screenshots for public technical documentation.
+
+## Part 5: Final Security Validation and Access Testing
+
+### Overview
+
+In the final part of this project, I tested account permissions on the Microsoft Entra-joined Windows endpoint and verified that the security settings reviewed in Part 3 remained configured after the device join. I compared administrator and standard-user access, completed Windows Hello setup for HRUser1, and examined the corresponding Microsoft Entra sign-in records.
+
+### Tools Used
+
+VirtualBox, Windows 10 Pro, Microsoft Entra admin center, Microsoft Authenticator, Windows Hello for Business, User Account Control (UAC), Windows Security (Microsoft Defender Antivirus and Windows Defender Firewall), and Command Prompt (`whoami`, `net localgroup`, `net accounts`, and `auditpol`).
+
+### 1. Reviewing Local Account Group Membership
+
+I ran `whoami`, `net localgroup Administrators`, and `net localgroup Users` while signed in as ITSupport1. The results confirmed that AzureAD\ITSupport1 and the local LabUser account belonged to Administrators, while LabUser1 appeared in Users and was not listed in Administrators.
+
+<img width="1027" height="771" alt="1" src="https://github.com/user-attachments/assets/1021171d-0902-4362-b147-2b7e05f87002" />
+
+### 2. Signing into Windows as HRUser1
+
+I signed into the existing Microsoft Entra-joined virtual machine using HRUser1. Windows loaded a separate profile for the cloud account without requiring another device join.
+
+<img width="1028" height="770" alt="2" src="https://github.com/user-attachments/assets/81b183a7-f62b-43b9-bf87-3902bc9908e7" />
+
+### 3. Approving Authentication During Account Setup
+
+During HRUser1’s Windows Hello setup, I received a Microsoft Authenticator approval request and approved it on my phone. The number displayed in the prompt was covered before publication.
+
+<img width="1022" height="771" alt="3" src="https://github.com/user-attachments/assets/f6e9631e-5ebd-438f-beb2-d787ae61780c" />
+
+### 4. Configuring a Windows Hello PIN
+
+I created a Windows Hello PIN for HRUser1 on the virtual machine. This screenshot shows the setup screen before entering any values, keeping the PIN private.
+
+<img width="1008" height="766" alt="4" src="https://github.com/user-attachments/assets/4c5a5a54-6518-4b1e-8d45-441ffbe82c95" />
+
+### 5. Completing Windows Hello Setup
+
+Windows confirmed that PIN setup was complete and that HRUser1 could use the PIN to sign into the device.
+
+<img width="1023" height="768" alt="5" src="https://github.com/user-attachments/assets/93eabf84-388c-48c5-ab18-b30f5dc4f93b" />
+
+### 6. Verifying HRUser1’s Standard-User Permissions
+
+I ran `whoami` and `whoami /groups` from a normal Command Prompt. The output identified the account as `azuread\hruser1` and showed BUILTIN\Users membership with a Medium Mandatory Level. The Administrators group was not listed in the account’s sign-in token.
+
+<img width="1022" height="766" alt="6" src="https://github.com/user-attachments/assets/c04aab7f-fccd-4203-9732-80a35fdc6595" />
+
+### 7. Testing an Administrator-Only Action
+
+While signed in as HRUser1, I attempted to run Command Prompt as administrator. User Account Control required an administrator username and password. I canceled the prompt without entering credentials, confirming that this standard-user session could not elevate through consent alone.
+
+<img width="1022" height="765" alt="7" src="https://github.com/user-attachments/assets/bf407548-b573-4ade-90a7-e8863961e567" />
+
+### 8. Returning to the ITSupport1 Account
+
+I signed out of HRUser1 and returned to ITSupport1 to continue checking the endpoint’s security configuration.
+
+<img width="1026" height="766" alt="8" src="https://github.com/user-attachments/assets/025261ed-e870-439f-b584-a54f6782ffec" />
+
+### 9. Reviewing Microsoft Defender Scan Results
+
+I opened Virus & threat protection and reviewed the most recent quick scan. Windows Security reported no current threats and showed zero threats found across 29,319 scanned files. These results describe that scan rather than guaranteeing that the entire system was free of threats.
+
+<img width="1022" height="773" alt="9" src="https://github.com/user-attachments/assets/77dccfca-efb6-4c0a-b8d3-30b7cf1bb290" />
+
+### 10. Verifying Real-Time and Cloud-Delivered Protection
+
+I opened Microsoft Defender’s protection settings and confirmed that Real-time protection and Cloud-delivered protection remained On.
+
+<img width="1018" height="772" alt="10" src="https://github.com/user-attachments/assets/32469883-905e-49e6-afdc-d901f3f53307" />
+
+### 11. Verifying Additional Defender Protections
+
+I confirmed that Automatic sample submission and Tamper Protection were both On. Together with the previous screenshot, this documented that the four Defender protection settings remained enabled after joining the device to Microsoft Entra ID.
+
+<img width="1010" height="772" alt="11" src="https://github.com/user-attachments/assets/70b700d1-babc-4783-9b68-45e4ab7301c2" />
+
+### 12. Verifying Windows Firewall Profiles
+
+I reviewed Firewall & network protection and confirmed that the firewall was On for Domain, Private, and Public profiles. Public was the active network profile during the check.
+
+<img width="1020" height="766" alt="12" src="https://github.com/user-attachments/assets/ac2021bb-add9-4bc0-9bdc-3b2b9c1c05f2" />
+
+### 13. Reviewing Local Password and Lockout Policies
+
+I ran `net accounts` and confirmed that the local minimum password length remained 14 characters. The account lockout threshold was 10 attempts, with a 10-minute lockout duration and a 10-minute observation window. These are local computer account policies, not the password policy governing Microsoft Entra cloud accounts.
+
+<img width="1020" height="771" alt="13" src="https://github.com/user-attachments/assets/6ab60f83-df95-4728-a4dd-c9cf85928d41" />
+
+### 14. Comparing Administrator Elevation Behavior
+
+From the ITSupport1 administrator session, I selected Run as administrator for Command Prompt. User Account Control displayed a Yes/No consent prompt, contrasting with the administrator credential prompt shown to HRUser1.
+
+<img width="1017" height="781" alt="14" src="https://github.com/user-attachments/assets/6815fd93-053b-43e8-b8ed-22f47243aaa2" />
+
+### 15. Verifying Logon Auditing
+
+I ran `auditpol /get /subcategory:"Logon"` from an elevated Command Prompt. The result confirmed that both Success and Failure auditing remained enabled for the Logon subcategory.
+
+<img width="1020" height="776" alt="15" src="https://github.com/user-attachments/assets/69818895-b69e-45b4-abb1-2dd6d7207e6b" />
+
+### 16. Reviewing HRUser1’s Cloud Sign-in Activity
+
+I opened HRUser1’s sign-in logs in the Microsoft Entra admin center and reviewed the events generated during testing. The list included successful Windows sign-ins, account setup activity, and an earlier failed Windows sign-in. Public IP addresses were covered before publication.
+
+<img width="1863" height="910" alt="16" src="https://github.com/user-attachments/assets/da6b90ee-1a56-4f1b-babf-a238aa59b36c" />
+
+### 17. Verifying Windows Hello Authentication
+
+I inspected the Authentication Details for HRUser1’s successful Windows Sign In event at 5:31:45 PM on October 24, 2026. The record identified Windows Hello for Business as the authentication method, with Succeeded set to true and the result User approved.
+
+<img width="1876" height="908" alt="17" src="https://github.com/user-attachments/assets/6ebc1af1-5ebe-4ae2-9f3f-de8a43337ca1" />
+
+### 18. Reviewing the Sign-in Status and Authentication Requirement
+
+I reviewed the Basic info tab for the same event. It showed a successful sign-in and a single-factor authentication requirement, alongside the additional detail “MFA requirement satisfied by strong authentication.” I compared this information with the Windows Hello method recorded in Authentication Details rather than interpreting the requirement field alone.
+
+<img width="1850" height="911" alt="18" src="https://github.com/user-attachments/assets/2f46875e-4930-4c55-802d-859f0d62e715" />
+
+### 19. Verifying the Device Associated with the Sign-in
+
+I reviewed the event’s Device info and confirmed that its device ID matched WIN10-ENDPOINT, the virtual machine joined in Part 4. The record showed Windows as the operating system and Azure AD joined as the join type. Managed and Compliant were both listed as No.
+
+<img width="1856" height="871" alt="19" src="https://github.com/user-attachments/assets/2ec2b641-3aef-4fde-8aec-c7c07e43a5be" />
+
+### Results and Observations
+
+The tests confirmed that the two cloud accounts had different local access levels. ITSupport1 belonged to the local Administrators group, while HRUser1 operated as a standard user and required administrator credentials to launch an elevated Command Prompt.
+
+The reviewed Defender protections, firewall profiles, local password and lockout settings, and logon auditing configuration remained in place after the Microsoft Entra join. Cloud sign-in records also provided evidence of HRUser1 successfully authenticating with Windows Hello for Business on the joined endpoint.
+
+The environment remained outside MDM management and did not have a compliant device status. Device join, local permissions, endpoint protections, and cloud authentication were therefore documented as separate aspects of the lab.
+
+### Skills Demonstrated
+
+- Local administrator and standard-user permission verification.
+- User Account Control testing.
+- Cloud account sign-in on a Microsoft Entra-joined Windows endpoint.
+- Microsoft Authenticator approval and Windows Hello setup.
+- Microsoft Defender and Windows Firewall configuration validation.
+- Local password and account lockout policy review.
+- Logon auditing verification using `auditpol`.
+- Microsoft Entra sign-in log analysis.
+- Correlating cloud sign-in records with a specific device.
+
+### Project Conclusion
+
+Across this project, I created cloud users and groups, registered authentication methods, hardened a Windows endpoint, joined it to Microsoft Entra ID, and validated the combined environment through access tests and security checks.
+
+The final results demonstrate how cloud identity and local endpoint security work together, while also showing the importance of verifying permissions and interpreting authentication evidence accurately.
+
